@@ -1690,7 +1690,7 @@ function toggleSound() {
 
 // Function to load the heartbeat sound
 function loadHeartbeatSound() {
-    const targetUrl = 'https://github.com/andrefrsilva/ecgshop/raw/main/Heartbeat_01.wav';
+    const targetUrl = 'https://github.com/andrefrsilva/ecgshop/raw/main/Heartbeat_01.mp3';
     fetch(targetUrl)
         .then(response => response.arrayBuffer())
         .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
