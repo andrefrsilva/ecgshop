@@ -1688,9 +1688,8 @@ function toggleSound() {
     }
 }
 
-// Function to load the heartbeat sound
 function loadHeartbeatSound() {
-    const targetUrl = 'https://github.com/andrefrsilva/ecgshop/raw/main/Heartbeat_01.mp3';
+    const targetUrl = 'https://andrefrsilva.github.io/ecgshop/Heartbeat_01.mp3';
     fetch(targetUrl)
         .then(response => response.arrayBuffer())
         .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
@@ -1698,6 +1697,7 @@ function loadHeartbeatSound() {
             heartbeatAudioBuffer = audioBuffer;
         });
 }
+
 
   
    // Define nodes and edges outside of DOMContentLoaded
