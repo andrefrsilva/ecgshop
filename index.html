@@ -1674,27 +1674,24 @@ function playBeep() {
 function stopBeeping() {
     isPlaying = false;
 }
-
-  let useHeartbeatSound = false; // Variable to keep track of the current sound selection
+let useHeartbeatSound = false; // Variable to keep track of the current sound selection
 let heartbeatAudioBuffer; // To store the heartbeat sound buffer
 
 // Function to toggle between beep and heartbeat sound
 function toggleSound() {
     const toggleButton = document.getElementById("soundToggle");
     useHeartbeatSound = toggleButton.checked;
-    
+
     // Load the heartbeat sound if it's selected
     if (useHeartbeatSound && !heartbeatAudioBuffer) {
         loadHeartbeatSound();
     }
 }
 
-
 // Function to load the heartbeat sound
 function loadHeartbeatSound() {
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const targetUrl = 'https://github.com/andrefrsilva/sheets2network/raw/main/Heartbeat_01.wav';
-    fetch(proxyUrl + targetUrl)
+    const targetUrl = 'https://github.com/andrefrsilva/ecgshop/raw/main/Heartbeat_01.wav';
+    fetch(targetUrl)
         .then(response => response.arrayBuffer())
         .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
         .then(audioBuffer => {
@@ -2372,6 +2369,477 @@ network.on('deselectNode', function (properties) {
     // Do something with the physicsEnabled variable
 }
 
+  
+
+document.getElementById('upload3').addEventListener('change', function(e) {
+    let file = e.target.files[0];
+    let reader = new FileReader();
+
+    reader.onloadend = function() {
+        document.getElementById('ecg3').src = reader.result;
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+});
+
+// Array to store the click times for the second image
+let clicks3 = []; 
+
+// Array to store the rates
+let Rates3 = [];
+
+// Add click event to the image
+document.getElementById('ecg3').addEventListener('click', function(event) {
+
+    // Retrieve the value from the input and parse it as a float
+    let totaltimeQRS = parseFloat(document.getElementById('secondsecg3').value);
+
+    // Check if the parsed value is a number greater than 0, otherwise, use 10 as the default value
+    const durationForQRS = (isNaN(totaltimeQRS) || totaltimeQRS <= 0) ? 10 : totaltimeQRS;
+
+    // Calculate the click position as a percentage of the total image width
+    const clickPosition = event.clientX / this.offsetWidth;
+
+    // Calculate the time of the click
+    const clickTime = clickPosition * durationForQRS;
+
+    // Add the click time to the array
+    clicks3.push(clickTime);
+  
+   // Sort the click times in ascending order
+        clicks3.sort((a, b) => a - b);
+
+    // Calculate the intervals between clicks
+    let intervals = [];
+    for (let i = 1; i < clicks3.length; i += 2) {
+        intervals.push(clicks3[i] - clicks3[i - 1]);
+    }
+
+    // Calculate the heart rates from the intervals
+    Rates3 = intervals.map(interval => 1000 * interval);
+
+    // Create the marker
+    var marker = document.createElement('div');
+    marker.classList.add('marker');
+
+    // Calculate the marker position
+    var markerPosition = clickPosition * this.offsetWidth;
+
+    // Adjust the marker position
+    const adjustment = 2; // Adjust this value to move the dot to the left/right
+    markerPosition -= adjustment;
+
+    // Set the marker position
+    marker.style.left = markerPosition + 'px';
+
+    // Add the marker to the container
+    document.getElementById('markers-container3').appendChild(marker);
+
+    // Update the box plot
+    boxPlot3.data.datasets[0].data = [Rates3];
+    boxPlot3.update();
+
+    // Update the scatter plot
+    scatterPlot3.data.datasets[0].data = Rates3.map((hr, index) => ({ x: index, y: hr }));
+    scatterPlot3.update();
+
+    // Calculate QRS
+    let sumQRS = Rates3.reduce((a, b) => a + b, 0);
+    let averageQRS = Math.round(sumQRS / Rates3.length);
+
+    // Get the td element
+    let averageQRSelement = document.getElementById('average-QRS');
+
+    // Update the average heart rate in the table
+    averageQRSelement.textContent = averageQRS.toFixed(0);
+
+    // Depending on the value of the average heart rate, color the background
+    if (averageQRS < 60) {
+        averageQRSelement.style.backgroundColor = '#89CFF0';
+    } else if (averageQRS >= 60 && averageQRS < 100) {
+        averageQRSelement.style.backgroundColor = '#AAFF00';
+    } else if (averageQRS >= 100 && averageQRS < 120) {
+        averageQRSelement.style.backgroundColor = 'orange';
+    } else {
+        averageQRSelement.style.backgroundColor = 'red';
+    }
+});
+
+let scatterPlot3 = new Chart(document.getElementById('scatterPlot3'), {
+    type: 'line',
+    data: {
+        datasets: [{
+            label: 'Intervalo QRS',
+            data: Rates3.map((hr, index) => ({ x: index, y: hr })),
+            fill: false,
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            borderColor: 'rgba(0, 0, 0, 1)',
+            tension: 0.1,
+            showLine: true
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                type: 'linear',
+                display: true,
+                title: {
+                    display: true,
+                    text: ''
+                }
+            },
+            y: {
+                beginAtZero: false,
+                title: {
+                    display: true,
+                    text: 'ms'
+                }
+            }
+        },
+        plugins: {
+          
+            annotation: {
+                annotations: [
+                    {
+                        type: 'box',
+                        yMin: 0,
+                        yMax: 60,
+                        backgroundColor: 'rgba(173, 216, 230, 0.3)', // light blue
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 60,
+                        yMax: 100,
+                        backgroundColor: 'rgba(144, 238, 144, 0.3)', // light green
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 100,
+                        yMax: 120,
+                        backgroundColor: 'rgba(255, 165, 0, 0.5)', // orange
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 120,
+                        yMax: Infinity,
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)', // red
+                      borderWidth: 0
+                    }
+                ]
+            }
+        }
+    }
+});
+
+let boxPlot3 = new Chart(document.getElementById('boxPlot3'), {
+    type: 'boxplot',
+    data: {
+        labels: [''],
+        datasets: [{
+            label: 'Intervalo QRS',
+            data: [Rates3],
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            borderColor: 'rgba(0, 0, 0, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:false
+                }
+            }]
+        },
+        plugins: {
+          legend: {
+                labels: {
+                    fontSize: 16 // Font size for the legend labels
+                }
+            },
+            annotation: {
+                annotations: [
+                    {
+                        type: 'box',
+                        yMin: 0,
+                        yMax: 60,
+                        backgroundColor: 'rgba(173, 216, 230, 0.3)', // light blue
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 60,
+                        yMax: 100,
+                        backgroundColor: 'rgba(144, 238, 144, 0.3)', // light green
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 100,
+                        yMax: 120,
+                        backgroundColor: 'rgba(255, 165, 0, 0.5)', // orange
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 120,
+                        yMax: Infinity,
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)', // red
+                      borderWidth: 0
+                    }
+                ]
+            }
+        }
+    }
+});
+
+
+
+
+document.getElementById('upload4').addEventListener('change', function(e) {
+    let file = e.target.files[0];
+    let reader = new FileReader();
+
+    reader.onloadend = function() {
+        document.getElementById('ecg4').src = reader.result;
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+});
+
+// Array to store the click times for the second image
+let clicks4 = []; 
+
+// Array to store the rates
+let Rates4 = [];
+
+// Add click event to the image
+document.getElementById('ecg4').addEventListener('click', function(event) {
+
+  // Check is there is heart rate. Otherwise we cannot calculate the corrected QT intervals
+  if (currentAverageHeartRate === 0) {
+        alert("A frequência cardíaca não foi encontrada. É preciso a distância média entre ondas R para calcular o intervalo QT corrigido");
+        return;
+    }
+  
+    // Retrieve the value from the input and parse it as a float
+    let totaltimeQT = parseFloat(document.getElementById('secondsecg4').value);
+
+    // Check if the parsed value is a number greater than 0, otherwise, use 10 as the default value
+    const durationForQT = (isNaN(totaltimeQT) || totaltimeQT <= 0) ? 10 : totaltimeQT;
+
+    // Calculate the click position as a percentage of the total image width
+    const clickPosition = event.clientX / this.offsetWidth;
+
+    // Calculate the time of the click
+    const clickTime = clickPosition * durationForQT;
+
+    // Add the click time to the array
+    clicks4.push(clickTime);
+  
+   // Sort the click times in ascending order
+        clicks4.sort((a, b) => a - b);
+
+    // Calculate the intervals between clicks
+    let intervals = [];
+    for (let i = 1; i < clicks4.length; i += 2) {
+        intervals.push(clicks4[i] - clicks4[i - 1]);
+    }
+
+// Calculate the RR interval in seconds
+let RRIntervalInSeconds = 60 / currentAverageHeartRate;
+  
+// Calculate and correct the QT intervals
+Rates4 = intervals.map(intervalInSeconds => (intervalInSeconds * 1000) / Math.sqrt(RRIntervalInSeconds));
+
+    // Create the marker
+    var marker = document.createElement('div');
+    marker.classList.add('marker');
+
+    // Calculate the marker position
+    var markerPosition = clickPosition * this.offsetWidth;
+
+    // Adjust the marker position
+    const adjustment = 2; // Adjust this value to move the dot to the left/right
+    markerPosition -= adjustment;
+
+    // Set the marker position
+    marker.style.left = markerPosition + 'px';
+
+    // Add the marker to the container
+    document.getElementById('markers-container4').appendChild(marker);
+
+    // Update the box plot
+    boxPlot4.data.datasets[0].data = [Rates4];
+    boxPlot4.update();
+
+    // Update the scatter plot
+    scatterPlot4.data.datasets[0].data = Rates4.map((hr, index) => ({ x: index, y: hr }));
+    scatterPlot4.update();
+
+    // Calculate QRS
+    let sumQT = Rates4.reduce((a, b) => a + b, 0);
+    let averageQT = Math.round(sumQT / Rates4.length);
+
+    // Get the td element
+    let averageQTelement = document.getElementById('average-QT');
+
+    // Update the average heart rate in the table
+    averageQTelement.textContent = averageQT.toFixed(0);
+
+    // Depending on the value of the average heart rate, color the background
+    if (averageQT < 340) {
+        averageQTelement.style.backgroundColor = '#89CFF0';
+    } else if (averageQT >= 340 && averageQT < 450) {
+        averageQTelement.style.backgroundColor = '#AAFF00';
+    } else if (averageQT >= 450 && averageQT < 500) {
+        averageQTelement.style.backgroundColor = 'orange';
+    } else {
+        averageQTelement.style.backgroundColor = 'red';
+    }
+});
+
+let scatterPlot4 = new Chart(document.getElementById('scatterPlot4'), {
+    type: 'line',
+    data: {
+        datasets: [{
+            label: 'Intervalo QT corrigido',
+            data: Rates4.map((hr, index) => ({ x: index, y: hr })),
+            fill: false,
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            borderColor: 'rgba(0, 0, 0, 1)',
+            tension: 0.1,
+            showLine: true
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                type: 'linear',
+                display: true,
+                title: {
+                    display: true,
+                    text: ''
+                }
+            },
+            y: {
+                beginAtZero: false,
+                title: {
+                    display: true,
+                    text: 'ms'
+                }
+            }
+        },
+        plugins: {
+          
+            annotation: {
+                annotations: [
+                    {
+                        type: 'box',
+                        yMin: 0,
+                        yMax: 340,
+                        backgroundColor: 'rgba(173, 216, 230, 0.3)', // light blue
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 340,
+                        yMax: 450,
+                        backgroundColor: 'rgba(144, 238, 144, 0.3)', // light green
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 450,
+                        yMax: 500,
+                        backgroundColor: 'rgba(255, 165, 0, 0.5)', // orange
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 500,
+                        yMax: Infinity,
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)', // red
+                      borderWidth: 0
+                    }
+                ]
+            }
+        }
+    }
+});
+let boxPlot4 = new Chart(document.getElementById('boxPlot4'), {
+    type: 'boxplot',
+    data: {
+        labels: [''],
+        datasets: [{
+            label: 'Intervalo QT corrigido',
+            data: [Rates4],
+            backgroundColor: 'rgba(0, 0, 0, .5)',
+            borderColor: 'rgba(0, 0, 0, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:false
+                }
+            }]
+        },
+        plugins: {
+          legend: {
+                labels: {
+                    fontSize: 16 // Font size for the legend labels
+                }
+            },
+            annotation: {
+                annotations: [
+                    {
+                        type: 'box',
+                        yMin: 0,
+                        yMax: 340,
+                        backgroundColor: 'rgba(173, 216, 230, 0.3)', // light blue
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 340,
+                        yMax: 450,
+                        backgroundColor: 'rgba(144, 238, 144, 0.3)', // light green
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 450,
+                        yMax: 500,
+                        backgroundColor: 'rgba(255, 165, 0, 0.5)', // orange
+                      borderWidth: 0
+                    },
+                    {
+                        type: 'box',
+                        yMin: 500,
+                        yMax: Infinity,
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)', // red
+                      borderWidth: 0
+                    }
+                ]
+            }
+        }
+    }
+});
+  
   
   </script>
 
