@@ -1687,18 +1687,24 @@ function toggleSound() {
         loadHeartbeatSound();
     }
 }
+  
+  let audioContext; // AudioContext instance
 
+// Function to load the heartbeat sound
 function loadHeartbeatSound() {
+    // Initialize the AudioContext if it hasn't been already
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
     const targetUrl = 'https://andrefrsilva.github.io/ecgshop/Heartbeat_01.mp3';
     fetch(targetUrl)
         .then(response => response.arrayBuffer())
-        .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
+        .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
         .then(audioBuffer => {
             heartbeatAudioBuffer = audioBuffer;
         });
 }
-
-
   
    // Define nodes and edges outside of DOMContentLoaded
 var nodes = null;
