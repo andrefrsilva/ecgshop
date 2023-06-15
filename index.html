@@ -10,6 +10,7 @@ Examples:
     <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   
   <style>    
 
@@ -158,76 +159,100 @@ Examples:
     }  
 
     table {
-      width: 100%; 
-      border-collapse: collapse;
-        table-layout: fixed;
-    }
-    
+      
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
 
-td {
-    width: 50%;
+ .square-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square {
+  border: 2px solid black;
+  text-align: center;
+}
+
+.square-content {
+  padding: 5px;
+}
+
+.square-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 0px;
 }
     
-        td:first-child {
-        text-align: right;
-    }
+td {
+  width: 50%;
+}
 
-    td:last-child {
-        text-align: left;
-    }
+td:first-child {
+  text-align: right;
+}
 
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
+td:last-child {
+  text-align: left;
+}
 
-    th {
-      background-color: #f2f2f2;
-    }
-    
-    .toggle-switch-label {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 13px; /* Reduce the text size in tables */
+}
 
-    .toggle-switch-label input[type="checkbox"] {
-      display: none;
-    }
+th {
+  background-color: #f2f2f2;
+}
 
-    .toggle-switch-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: red;
-      transition: .4s;
-      border-radius: 34px;
-    }
+.toggle-switch-label {
+  position: relative;
+  display: inline-block;
+  width: 40px; /* Reduce the width of the toggle */
+  height: 24px; /* Reduce the height of the toggle */
+}
 
-    .toggle-switch-slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
+.toggle-switch-label input[type="checkbox"] {
+  display: none;
+}
 
-    input[type="checkbox"]:checked + .toggle-switch-slider {
-      background-color: #AAFF00;
-    }
+.toggle-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: red;
+  transition: 0.4s;
+  border-radius: 24px; /* Reduce the border radius of the toggle */
+}
 
-    input[type="checkbox"]:checked + .toggle-switch-slider:before {
-      transform: translateX(26px);
-    }
+.toggle-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; /* Reduce the size of the toggle knob */
+  width: 18px; /* Reduce the size of the toggle knob */
+  left: 3px; /* Adjust the position of the toggle knob */
+  bottom: 3px; /* Adjust the position of the toggle knob */
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input[type="checkbox"]:checked + .toggle-switch-slider {
+  background-color: #aaff00;
+}
+
+input[type="checkbox"]:checked + .toggle-switch-slider:before {
+  transform: translateX(18px); /* Adjust the position of the toggle knob */
+}
+
     
   .image-container {
       display: flex;
@@ -281,6 +306,11 @@ td {
     </div>
       
     </div>
+  <br>
+  
+
+
+
   
   <br>
     <div class="image-container">
@@ -409,7 +439,7 @@ td {
     <span class="toggle-switch-slider"></span>
   </label>
 </td>
-        <td>P-R / P-Q <span class="special-letter">S</span>audável? <i class="fas fa-info-circle tooltip-icon" data-tooltip="https://www.nucleotype.com/static/be2345aef6cb027a6eeda7bec95bc509/0f98f/EKG-waves-bumps.jpg"></i><br>(Ver em II; P-R entre [<span class="special-letter">120</span>, 200]ms (3 a 5 quadradinhos) e constante; Baixo? Síndrome Wolff-<strong>P</strong>a<strong>R</strong>kinson-White. Alto? Bloqueio AV de <strong>PR</strong>imeiro grau.<br><h3 id="average-PR">-</h3></td>
+        <td>P-R / P-Q <span class="special-letter">S</span>audável e nenhuma P <span class="special-letter">S</span>olteira (sem estar de 1:1 com QRS)? <i class="fas fa-info-circle tooltip-icon" data-tooltip="https://www.nucleotype.com/static/be2345aef6cb027a6eeda7bec95bc509/0f98f/EKG-waves-bumps.jpg"></i><br>(Ver em II; P-R entre [<span class="special-letter">120</span>, 200]ms (3 a 5 quadradinhos) e constante; Baixo? Síndrome Wolff-<strong>P</strong>a<strong>R</strong>kinson-White. Alto? Bloqueio AV de <strong>PR</strong>imeiro grau.)<br><h3 id="average-PR">-</h3></td>
       </tr>
     </table> 
   </div>
@@ -421,8 +451,21 @@ td {
 <div class="image-container">
     <div id="resultrhythm" style="text-align: center; font-size: 20px; margin-top: 20px;"></div>
   </div>
+      
+<br><br>
+<div class="square-container">
+    <div class="square">
+      <div class="square-content">
+        <h2 class="square-header">Síndrome Wolff-Parkinson-White</h2>
+        <p>PQ ↓</p>
+        <p>QRS ↑</p>
+        <p>Onda Delta <i class="fas fa-info-circle tooltip-icon" data-tooltip="https://i.postimg.cc/pX2cS0RW/image.png"></i></p>
+      </div>
+    </div>
+  </div>
 
 <br><br>
+
 <div class="image-container">
 <h2>Intervalos PR / PQ.</h2>
   </div>
@@ -692,7 +735,7 @@ positiva >2mm e componente negativa > 1 mm e >40ms </td>
 <div class="image-container">
   <table id="newTable">
     <tr>
-      <th>Alteração</th>
+      <th>Alteração (Exemplos de alterações de repolarização ventricular comuns <i class="fas fa-info-circle tooltip-icon" data-tooltip="https://i.postimg.cc/Qd5w3LL7/image.png"></i>)</th>
       <th>Elevação ST</th>
       <th>Depressão ST*</th>
       <th>Redução da onda R</th>
@@ -731,7 +774,7 @@ positiva >2mm e componente negativa > 1 mm e >40ms </td>
       <th>-</th>     
        <th>Aumento desproporcionado da amplitude da onda R</th>
     </tr>
-  </table>
+  </table>  
 </div>
 
 <br>
@@ -1284,50 +1327,55 @@ let scatterPlot2 = new Chart(document.getElementById('scatterPlot2'), {
 });
 
   
-  // Get a reference to the table
-  const table = document.getElementById('newTable');
+ // Get a reference to the table
+const table = document.getElementById('newTable');
 
-  // Define the text for each row
- const rowTexts = [
-  'I',
-  'II',
-  'III',
-  'aVF',
-  'aVR',
-  'aVL',
-  'V1',
-  'V2',
-  'V3',
-  'V4',
-  'V5',
-  'V6'
+// Define the texts and background colors for each row
+const rowTexts = [
+    { text: '(Descendente [A], Septal) V1', color: 'rgba(255,255,0, 0.3)' },
+    { text: '(Descendente [A], Septal) V2', color: 'rgba(255,255,0, 0.3)' },
+    { text: '(Descendente [A], [A]) V3', color: 'rgba(191,144,0, 0.3)' },
+    { text: '(Descendente [A], [A]) V4', color: 'rgba(191,144,0, 0.3)' },
+   { text: '(Cx, [L]) V5', color: 'rgba(146,208,80, 0.3)' },
+   { text: '(Cx, [L]) V6', color: 'rgba(146,208,80, 0.3)' },
+  { text: '(Cx, [L]) I', color: 'rgba(146,208,80, 0.3)' },
+   { text: '(Cx, [L]) aVL', color: 'rgba(146,208,80, 0.3)' },
+   { text: '(Coronária →R, [I]) II', color: 'rgba(255,102,204, 0.3)' },
+   { text: '(Coronária →R, [I]) III', color: 'rgba(255,102,204, 0.3)' },
+   { text: '(Coronária →R, [I]) avF', color: 'rgba(255,102,204, 0.3)' },
+   { text: 'aVR', color: 'rgba(255,255,255, 0.3)' }
 ];
 
-  // Loop through the texts and create a row for each one
-  for (let text of rowTexts) {
-    const row = document.createElement('tr');
-    const tdText = document.createElement('td');
-    tdText.textContent = text;
-    row.appendChild(tdText);
+// Loop through the objects and create a row for each one
+for (let rowData of rowTexts) {
+  const row = document.createElement('tr');
 
-    // Add 4 columns with checkboxes
-    for (let i = 0; i < 5; i++) {
-      const tdToggle = document.createElement('td');
-      const label = document.createElement('label');
-      label.className = 'toggle-switch-label';
-      const input = document.createElement('input');
-      input.type = 'checkbox';
-      const span = document.createElement('span');
-      span.className = 'toggle-switch-slider';
-      
-      label.appendChild(input);
-      label.appendChild(span);
-      tdToggle.appendChild(label);
-      row.appendChild(tdToggle);
-    }
-
-    table.appendChild(row);
+  // Add the cells with checkboxes
+  for (let i = 0; i < 5; i++) {
+    const tdToggle = document.createElement('td');
+    const label = document.createElement('label');
+    label.className = 'toggle-switch-label';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    const span = document.createElement('span');
+    span.className = 'toggle-switch-slider';
+    
+    label.appendChild(input);
+    label.appendChild(span);
+    tdToggle.appendChild(label);
+    tdToggle.style.backgroundColor = rowData.color;
+    row.appendChild(tdToggle);
   }
+
+  // Create the cell for the lead text and set its background color
+  const tdText = document.createElement('td');
+  tdText.textContent = rowData.text;
+  tdText.style.backgroundColor = rowData.color;
+  row.insertBefore(tdText, row.firstChild);
+
+  table.appendChild(row);
+}
+
   
 function calculateCardiacAxis() {
     let leadI = parseFloat(document.getElementById('leadI').value);
@@ -2847,7 +2895,6 @@ let boxPlot4 = new Chart(document.getElementById('boxPlot4'), {
         }
     }
 });
-  
   
   </script>
 
