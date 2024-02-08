@@ -4,13 +4,13 @@ PRODID:ics.py - http://git.io/lLljaA
 BEGIN:VEVENT
 DTEND:20240209T090000Z
 DTSTART:20240209T080000Z
-SUMMARY:Cristina</br>T: Consultation</br>€: 30</br>NIF: 987654321</br>TS: 2024-02-08 18:28:54</br>User: Cristina21</br>Comm: Follow-up
-UID:ca230944-f5bf-4155-b475-893dc2b7cdca@ca23.org
+SUMMARY:Cristina</br>T: Consultation</br>€: 30</br>NIF: 987654321</br>TS: 2024-02-08 19:56:02</br>User: Cristina21</br>Comm: Follow-up
+UID:859498de-b9ff-4e08-9161-1b5ee6467324@8594.org
 END:VEVENT
 BEGIN:VEVENT
 DTEND:20240209T080000Z
 DTSTART:20240209T070000Z
-SUMMARY:Margarida</br>T: Consultation</br>€: 60</br>NIF: 123456789</br>TS: 2024-02-08 18:28:54</br>User: margaridauser</br>Comm: Regular check-up
-UID:f983af12-8f8b-4c36-933a-9d1037f73056@f983.org
+SUMMARY:Margarida</br>T: Consultation</br>€: 60</br>NIF: 123456789</br>TS: 2024-02-08 19:56:02</br>User: margaridauser</br>Comm: Regular check-up
+UID:252c0a0e-a37e-4952-b893-abbefde064c9@252c.org
 END:VEVENT
 END:VCALENDAR
