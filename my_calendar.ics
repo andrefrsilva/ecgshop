@@ -4,7 +4,7 @@ PRODID:ics.py - http://git.io/lLljaA
 BEGIN:VEVENT
 DTEND:20240209T080000Z
 DTSTART:20240209T070000Z
-SUMMARY:Placeholder Name</br>T: Teens Tutoring Session</br>TS: 2024-02-09 20:14:04</br>User: 6077070364</br>Comm: No comments</br>€: 45.0</br>Paid?: </br>NIF: 123456789</br>Pay_id: 02097478</br>Pay_TS: 2024-02-09 20:14:04
-UID:ad3b34e5-a64c-44ee-9833-1d7e3e621cd8@ad3b.org
+SUMMARY:Placeholder Name</br>T: Teens Tutoring Session</br>TS: 2024-02-09 20:14:16</br>User: 6077070364</br>Comm: No comments</br>€: 45.0</br>Paid?: </br>NIF: 123456789</br>Pay_id: 02096920</br>Pay_TS: 2024-02-09 20:14:16
+UID:c795be9f-6894-461b-8f99-d6806236e5b8@c795.org
 END:VEVENT
 END:VCALENDAR
