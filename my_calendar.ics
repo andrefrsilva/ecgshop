@@ -4,13 +4,7 @@ PRODID:ics.py - http://git.io/lLljaA
 BEGIN:VEVENT
 DTEND:20240209T080000Z
 DTSTART:20240209T070000Z
-SUMMARY:Margarida</br>T: Consultation</br>€: 60</br>NIF: 123456789</br>TS: 2024-02-08 20:58:05</br>User: margaridauser</br>Comm: Regular check-up
-UID:47d8bd1f-2404-4d1f-8f49-be74cf96fb32@47d8.org
-END:VEVENT
-BEGIN:VEVENT
-DTEND:20240209T090000Z
-DTSTART:20240209T080000Z
-SUMMARY:Cristina</br>T: Consultation</br>€: 30</br>NIF: 987654321</br>TS: 2024-02-08 20:58:05</br>User: Cristina21</br>Comm: Follow-up
-UID:f7d163e8-f2d0-4a34-89b1-6d07262f7a1c@f7d1.org
+SUMMARY:Placeholder Name</br>T: Teens Tutoring Session</br>TS: 2024-02-09 20:10:17</br>User: 6077070364</br>Comm: No comments</br>€: 45.0</br>Paid?: </br>NIF: 123456789</br>Pay_id: 02098551</br>Pay_TS: 2024-02-09 20:10:17
+UID:e2b5a148-f665-400c-84db-56cfa1243547@e2b5.org
 END:VEVENT
 END:VCALENDAR
